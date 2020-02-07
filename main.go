@@ -5,6 +5,7 @@ import (
 	pb "grpc-example/api/user"
 	"log"
 	"net"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -29,6 +30,17 @@ func (s *server) FindUser(ctx context.Context, req *pb.FindRequest) (*pb.FindRes
 			Id: req.Id,
 		},
 	}, nil
+}
+
+// GenInt(ctx context.Context, in *CreateGenRequest, opts ...grpc.CallOption) (User_GenIntClient, error)
+
+func (s *server) GenInt(req *pb.CreateGenRequest, stream pb.User_GenIntServer) error {
+	var count int32 = 1
+	for {
+		stream.Send(&pb.GenResponse{Number: count})
+		count++
+		time.Sleep(time.Second * 2)
+	}
 }
 
 func main() {

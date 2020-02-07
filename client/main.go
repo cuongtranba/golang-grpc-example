@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	pb "grpc-example/api/user"
+	"io"
 	"log"
 
 	"google.golang.org/grpc"
@@ -26,6 +27,18 @@ func main() {
 		log.Println(err)
 		return
 	}
-	log.Println(resp.GetMessage(), "--", resp.GetStatus)
+	log.Println(resp.GetMessage(), "--", resp.GetStatus())
+	stream, _ := client.GenInt(context.Background(), &pb.CreateGenRequest{})
+	for {
+		in, err := stream.Recv()
+		log.Println("Received value")
+		if err == io.EOF {
+			return
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(in.Number)
+	}
 	// To do something with resp from instance server response
 }

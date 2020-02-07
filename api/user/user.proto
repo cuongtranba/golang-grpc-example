@@ -11,7 +11,7 @@ service User {
 
     rpc CreateUser(CreateRequest) returns (CreateResponse);
 
-    // rpc GenInt (CreateGenRequest) returns (stream GenResponse){};
+    rpc GenInt (CreateGenRequest) returns (stream GenResponse);
 }
 
 message Model {
